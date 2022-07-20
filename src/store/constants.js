@@ -1,0 +1,4 @@
+export const OPEN_MODAL = 'OPEN_MODAL';
+export const CLOSE_MODAL = 'CLOSE_MODAL';
+export const EMAIL_INPUT_VALUE = 'EMAIL_INPUT_VALUE';
+export const SUBSCRIBE_EMAIL = 'SUBSCRIBE_EMAIL';
