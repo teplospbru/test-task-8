@@ -8,37 +8,47 @@ const Modal = ({ dispatch, value }) => {
     const [ isInputAlert, setInputAlert ] = useState(false); // состояние алерта инпута
     
     // Хэндлер кнопки "крестик"
-    const closeBtnHandler = (e) => {
+    const closeBtnHandler = e => {
         e.preventDefault();
         dispatch({ type: CLOSE_MODAL })
     }
 
     // Хэндлер чекбокса
-    const checkboxHandler = (e) => {
+    const checkboxHandler = e => {
         e.stopPropagation();
         setChecked(isChecked => !isChecked);
         setCheckboxAlert(false);
     }
 
     // Хэндлер инпута
-    const emailInputHandler = (e) => {
+    const emailInputHandler = e => {
         const value = e.target.value;
         dispatch({ type: EMAIL_INPUT_VALUE, payload: value });
     }
 
-    // Хэндлер кнопки subscribe
-    const subscribeBtnHandler = (e) => {
-        e.preventDefault();
-
+    const validate = () => {
         if(isChecked) { // если чекбокс зачекан
-            const validate = /^\S+@\S+$/; // простая валидация email
-            if(validate.test(value)) { // если email-адрес валидный
+            const valid = /^\S+@\S+$/; // простая валидация email
+            if(valid.test(value)) { // если email-адрес валидный
                 dispatch({ type: SUBSCRIBE_EMAIL });
             } else { // если невалидный
                 setInputAlert(true);
             }
         } else { // если чекбокс не зачекан
             setCheckboxAlert(true);
+        }
+    }
+
+    // Хэндлер кнопки subscribe
+    const subscribeBtnHandler = e => {
+        e.preventDefault();
+        validate();        
+    }
+
+    // Хэндлер кнопки "enter"
+    const enterButtonHandler = e => {
+        if(e.key === 'Enter') {
+            validate();
         }
     }
 
@@ -68,7 +78,7 @@ const Modal = ({ dispatch, value }) => {
                     <span className="promo-2">Subscribe to recieve 10% off promocode plus<br/>exclusive offers and deals</span>
                     <form className="subscribe">
                         <label className="label-1">Email-address{ isInputAlert && ( <span style={{ color: 'red' }} data-testid="alert-span">  invalid email</span> ) }</label>
-                        <input type="text" name="email" onChange={ e => emailInputHandler(e) } value={ value } data-testid="input"></input>
+                        <input type="text" name="email" onChange={ e => emailInputHandler(e) } value={ value } data-testid="input" onKeyPress={ enterButtonHandler }></input>
                         <input type="submit" value="Subscribe" onClick={ e => subscribeBtnHandler(e) } data-testid="submit"></input>
                         <label className="label-2" htmlFor="policy">
                             <input type="checkbox" name="policy" id="policy" onClick={ e => checkboxHandler(e) } data-testid="checkbox"></input>

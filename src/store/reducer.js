@@ -13,7 +13,9 @@ export const reducer = (state, action) => {
         case OPEN_MODAL:
             return {
                 ...state,
-                isModal: true
+                isModal: true,
+                message: 'Subscribe to receive promocode',
+                color: ''
             }
         case CLOSE_MODAL:
             return {
